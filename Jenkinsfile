@@ -1,25 +1,29 @@
 pipeline {
     agent any
     stages {
-
-        stage("Build")
-        {
-            steps
-            {
-                script {
-                        echo "INFO: Build Stage"
-                    }
+        stage('Checkout') {
+            steps {
+                git branch: 'master',
+                    credentialsId: 'github_access_token',
+                    url: 'https://github.com/leeleelee3264/musical-twitterbot-without-selenium.git'
             }
         }
+    }
 
-        stage("Deploy")
-        {
-            steps
-            {
-                script {
-                            echo "INFO: Deploy Stage"
-                    }
-            }
+        post {
+        success {
+            slackSend (
+                channel: '#jenkins-cicd',
+                color: '#00FF00',
+                message: "SUCCESS!!"
+            )
+        }
+        failure {
+            slackSend (
+                channel: '#jenkins-cicd',
+                color: '#FF0000',
+                message: "FAIL!!"
+            )
         }
     }
 }
