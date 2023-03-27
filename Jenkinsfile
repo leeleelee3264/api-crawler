@@ -4,7 +4,7 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        git branch: "${env.BRANCH_NAME}",
+        git branch: 'master',
         credentialsId: 'github_access_token',
         url: 'https://github.com/leeleelee3264/musical-twitterbot-without-selenium.git'
       }
