@@ -3,12 +3,6 @@ pipeline {
 
   stages {
     stage('Checkout') {
-      when {
-        allOf {
-         branch 'master'
-         expression { env.BRANCH_NAME ==~ /^pull\/.*$/ }
-        }
-      }
       steps {
         sh "git branch -D ${env.BRANCH_NAME}" // Delete existing branch
         git branch: "${env.BRANCH_NAME}",
@@ -17,34 +11,16 @@ pipeline {
       }
     }
     stage('Build') {
-      when {
-        allOf {
-         branch 'master'
-         expression { env.BRANCH_NAME ==~ /^pull\/.*$/ }
-        }
-      }
       steps {
         echo "INFO: Build"
       }
     }
     stage('Integration') {
-      when {
-        allOf {
-         branch 'master'
-         expression { env.BRANCH_NAME ==~ /^pull\/.*$/ }
-        }
-      }
       steps {
         echo "INFO: Integration"
       }
     }
     stage('Test') {
-      when {
-        allOf {
-         branch 'master'
-         expression { env.BRANCH_NAME ==~ /^pull\/.*$/ }
-        }
-      }
       steps {
         echo "INFO: Test"
       }
