@@ -4,4 +4,3 @@ This is test file to check webhook works
 [Add] Make fourth change
 [Add] Make fifth change
 [Add] Make 6 change
-[Add] Make 7 change
