@@ -57,21 +57,22 @@ pipeline {
         echo "INFO: Deploy: this is master only"
       }
     }
-    post {
-      success {
-       slackSend (
-            channel: '#jenkins-cicd',
-            color: 'good',
-            message: "Build successful!"
-       )
-      }
-      failure {
-       slackSend (
-            channel: '#jenkins-cicd',
-            color: 'danger',
-            message: "Build failed :cry:"
-       )
-      }
-    }
   }
+
+          post {
+        success {
+            slackSend (
+                channel: '#jenkins-cicd',
+                color: '#00FF00',
+                message: "SUCCESS!!"
+            )
+        }
+        failure {
+            slackSend (
+                channel: '#jenkins-cicd',
+                color: '#FF0000',
+                message: "FAIL!!"
+            )
+        }
+    }
 }
