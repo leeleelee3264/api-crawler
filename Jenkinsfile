@@ -71,7 +71,12 @@ pipeline {
                         blocks: blocks
                     )
                 } else {
-                    // Add your code here
+                    slackSend (
+                        channel: '#jenkins-cicd',
+                        color: '#00FF00',
+                        message: "SUCCESS!!",
+                        blocks: blocks
+                    )
                 }
             }
         }
