@@ -43,36 +43,57 @@ pipeline {
     post {
         success {
             script {
+                def blocks = [
+                    [
+                        "type": "section",
+                        "text": [
+                            "type": "mrkdwn",
+                            "text": "Hello, Assistant to the Regional Manager Dwight! *Michael Scott* wants to know where you'd like to take the Paper Company investors to dinner tonight.\n\n *Please select a restaurant:*"
+                        ]
+                    ],
+                    [
+                        "type": "divider"
+                    ],
+                    [
+                        "type": "section",
+                        "text": [
+                            "type": "mrkdwn",
+                            "text": "*Farmhouse Thai Cuisine*\n:star::star::star::star: 1528 reviews\n They do have some vegan options, like the roti and curry, plus they have a ton of salad stuff and noodles can be ordered without meat!! They have something for everyone here"
+                        ]
+                    ]
+                ]
+
                 if (DEPLOY_TAG == 'yes') {
                     slackSend (
                         channel: '#jenkins-cicd',
                         color: '#00FF00',
-                        message: "SUCCESS With Deploy!!"
+                        message: "SUCCESS With Deploy!!",
+                        blocks: blocks
                     )
                 } else {
-                    slackSend (
-                        channel: '#jenkins-cicd',
-                        color: '#00FF00',
-                        message: "SUCCESS!!"
-                    )
+                    // Add your code here
                 }
             }
         }
+
         failure {
             script {
-                if (DEPLOY_TAG == 'yes') {
-                    slackSend (
-                        channel: '#jenkins-cicd',
-                        color: '#00FF00',
-                        message: "Failed With Deploy!!"
-                    )
-                } else {
-                    slackSend (
-                        channel: '#jenkins-cicd',
-                        color: '#00FF00',
-                        message: "Failed!!"
-                    )
-                }
+                def blocks = [
+                    [
+                        "type": "section",
+                        "text": [
+                            "type": "mrkdwn",
+                            "text": "*Pipeline Failed*\nOh no! Something went wrong and the pipeline failed. Please check the logs for more information."
+                        ]
+                    ]
+                ]
+
+                slackSend (
+                    channel: '#jenkins-cicd',
+                    color: '#FF0000',
+                    message: "FAILURE!!",
+                    blocks: blocks
+                )
             }
         }
     }
