@@ -65,14 +65,14 @@ pipeline {
 
                 if (DEPLOY_TAG == 'yes') {
                     slackSend (
-                        channel: '#my-jenkins',
+                        channel: '#jenkins-cicd',
                         color: '#00FF00',
                         message: "SUCCESS With Deploy!!",
                         blocks: blocks
                     )
                 } else {
                     slackSend (
-                        channel: '#my-jenkins',
+                        channel: '#jenkins-cicd',
                         color: '#00FF00',
                         message: "SUCCESS!!",
                         blocks: blocks
@@ -94,7 +94,7 @@ pipeline {
                 ]
 
                 slackSend (
-                    channel: '#my-jenkins',
+                    channel: '#jenkins-cicd',
                     color: '#FF0000',
                     message: "FAILURE!!",
                     blocks: blocks
