@@ -55,9 +55,9 @@ pipeline {
 def notiBuilder(String status, String color, String deploy) {
 
   if (deploy == 'yes') {
-    message = '*Deploy* result'
+    message = ':fire: *Deploy* result :fire:'
   } else {
-    message = '*Build* result'
+    message = ':fire: *Build* result :fire:'
   }
 
   def blocks = [
@@ -76,7 +76,7 @@ def notiBuilder(String status, String color, String deploy) {
       "fields": [
         [
           "type": "mrkdwn",
-          "text": "*Status*\nstatus"
+          "text": "*Status*\n${status}"
         ],
         [
           "type": "mrkdwn",
@@ -108,7 +108,7 @@ def notiBuilder(String status, String color, String deploy) {
 
   slackSend (
     channel: '#my-jenkins',
-    color: color,
+    color: ${color},
     blocks: blocks
   )
 }
