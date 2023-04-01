@@ -42,11 +42,11 @@ pipeline {
 
     post {
         success {
-            notiBuilder('Success', '#00FF00', DEPLOY_TAG)
+            notiBuilder('Success', 'good', DEPLOY_TAG)
         }
 
         failure {
-            notiBuilder('Failed', '#FF0000', DEPLOY_TAG)
+            notiBuilder('Failed', 'danger', DEPLOY_TAG)
         }
     }
 }
