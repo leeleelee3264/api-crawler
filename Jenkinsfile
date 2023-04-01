@@ -121,7 +121,7 @@ def notiBuilder(String status, String deploy) {
         ],
         [
           "type": "mrkdwn",
-          "text": "*Commit Message*\${env.GIT_COMMIT_MSG}"
+          "text": "*Commit Message*\n${env.GIT_COMMIT_MSG}"
         ]
       ]
     ],
