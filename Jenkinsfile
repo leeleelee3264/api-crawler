@@ -13,6 +13,7 @@ pipeline {
 
         script {
             env.GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
+            env.GIT_COMMIT_AUTHOR = sh (script: 'git log -1 --pretty=format:%an ${GIT_COMMIT}', returnStdout: true).trim()
         }
       }
     }
@@ -109,7 +110,7 @@ def notiBuilder(String status, String deploy) {
         ],
         [
           "type": "mrkdwn",
-          "text": "*Author*\n"
+          "text": "*Author*\n${env.GIT_COMMIT_AUTHOR}"
         ],
         [
           "type": "mrkdwn",
