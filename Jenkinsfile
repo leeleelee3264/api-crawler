@@ -48,6 +48,8 @@ pipeline {
         always {
             script {
                 BUILD_USER = getBuildUser()
+                def commitInfo = sh(script: 'git log --pretty=format:"%h - %an: %s" -1', returnStdout: true).trim()
+                def commitUrl = sh(script: 'git log --pretty=format:"https://github.com/leeleelee3264/musical-twitterbot-without-selenium/commit/%H" -1', returnStdout: true).trim()
             }
         }
         success {
@@ -88,11 +90,11 @@ pipeline {
                             ],
                             [
                                 "type": "mrkdwn",
-                                "text": "*Commit*\n<htts://github.com|frewr32>"
+                                "text": "*Commit*\n${commitUrl}"
                             ],
                             [
                                 "type": "mrkdwn",
-                                "text": "*Commit Message*\nThis is commit message. long long long long long long"
+                                "text": "*Commit Message*\n${commitInfo}"
                             ]
                         ]
                     ]
