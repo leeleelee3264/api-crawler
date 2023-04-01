@@ -1,3 +1,7 @@
+def getBuildUser() {
+    return currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserId()
+}
+
 pipeline {
     agent any
     environment {
@@ -41,26 +45,57 @@ pipeline {
     }
 
     post {
+        always {
+            script {
+                BUILD_USER = getBuildUser()
+            }
+        }
         success {
             script {
                 def blocks = [
-                    [
+                    {
                         "type": "section",
-                        "text": [
+                        "text": {
                             "type": "mrkdwn",
-                            "text": "Hello, Assistant to the Regional Manager Dwight! *Michael Scott* wants to know where you'd like to take the Paper Company investors to dinner tonight.\n\n *Please select a restaurant:*"
-                        ]
-                    ],
-                    [
+                            "text": "*Build Result*"
+                        }
+                    },
+                    {
                         "type": "divider"
-                    ],
-                    [
+                    },
+                    {
                         "type": "section",
-                        "text": [
-                            "type": "mrkdwn",
-                            "text": "*Farmhouse Thai Cuisine*\n:star::star::star::star: 1528 reviews\n They do have some vegan options, like the roti and curry, plus they have a ton of salad stuff and noodles can be ordered without meat!! They have something for everyone here"
+                        "fields": [
+                            {
+                                "type": "mrkdwn",
+                                "text": "*Status*\n${currentBuild.currentResult}"
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": "*Branch*\n${env.BRANCH_NAME}"
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": "*Output*\n<${env.BUILD_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}>"
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": "*Author*\n${BUILD_USER}"
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": "*Builder Number*\n${env.BUILD_NUMBER}"
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": "*Commit*\n<htts://github.com|frewr32>"
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": "*Commit Message*\nThis is commit message. long long long long long long"
+                            }
                         ]
-                    ]
+                    }
                 ]
 
                 if (DEPLOY_TAG == 'yes') {
@@ -84,22 +119,39 @@ pipeline {
         failure {
             script {
                 def blocks = [
-                    [
+                    {
                         "type": "section",
-                        "text": [
+                        "text": {
                             "type": "mrkdwn",
-                            "text": "*Pipeline Failed*\nOh no! Something went wrong and the pipeline failed. Please check the logs for more information."
-                        ]
-                    ]
-                ]
+                            "text": "*Build Result*"
+                        }
+                    },
+                    {
+                        "type": "divider"
+                    },
+                    {
+                        "type": "section",
+                        "fields": [
+                            {
+                                "type": "mrkdwn",
+                                "text": "*Status*\nsuccess"
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": "*Branch*\nMaster"
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": "*Output*\n<https://jenkins.leelee.me|leelee-jenkins#198>"
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": "*Author*\n20"
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": "*Builder Number*\n20"
+                            },
 
-                slackSend (
-                    channel: '#my-jenkins',
-                    color: '#FF0000',
-                    message: "FAILURE!!",
-                    blocks: blocks
-                )
-            }
-        }
-    }
-}
+
+def notifyBui
