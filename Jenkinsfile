@@ -15,8 +15,6 @@ pipeline {
             env.GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
             env.GIT_COMMIT_AUTHOR = sh (script: 'git log -1 --pretty=format:%an ${GIT_COMMIT}', returnStdout: true).trim()
             env.GIT_COMMIT_SHORT = sh (script: 'git log -1 --pretty=%h ${GIT_COMMIT}', returnStdout: true).trim()
-            env.GIT_COMMIT_URL = sh (script: 'git log -1 --pretty=%b ${GIT_COMMIT} | grep -oE \'https://github.com/[^\']+\'' , returnStdout: true).trim()
-
         }
       }
     }
@@ -121,7 +119,7 @@ def notiBuilder(String status, String deploy) {
         ],
         [
           "type": "mrkdwn",
-          "text": "*Commit*\n<${env.GIT_COMMIT_URL}|${env.GIT_COMMIT_SHORT}>"
+          "text": "*Commit*\n<${env.GIT_URL}/commit/${env.GIT_COMMIT_SHORT}|${env.GIT_COMMIT_SHORT}>"
         ],
         [
           "type": "mrkdwn",
