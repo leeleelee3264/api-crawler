@@ -1,63 +1,99 @@
 pipeline {
-    agent any
-    environment {
-        DEPLOY_TAG = 'no'
+  agent any
+  stages {
+    stage('Unit Test') {
+      steps {
+        sh 'mvn clean test'
+      }
+    }
+    stage('Deploy Standalone') {
+      steps {
+        sh 'mvn deploy -P standalone'
+      }
+    }
+    stage('Deploy AnyPoint') {
+      environment {
+        ANYPOINT_CREDENTIALS = credentials('anypoint.credentials')
+      }
+      steps {
+        sh 'mvn deploy -P arm -Darm.target.name=local-4.0.0-ee -Danypoint.username=${ANYPOINT_CREDENTIALS_USR}  -Danypoint.password=${ANYPOINT_CREDENTIALS_PSW}'
+      }
+    }
+    stage('Deploy CloudHub') {
+      environment {
+        ANYPOINT_CREDENTIALS = credentials('anypoint.credentials')
+      }
+      steps {
+        sh 'mvn deploy -P cloudhub -Dmule.version=4.0.0 -Danypoint.username=${ANYPOINT_CREDENTIALS_USR} -Danypoint.password=${ANYPOINT_CREDENTIALS_PSW}'
+      }
+    }
+  }
+}
+pipeline {
+  agent any
+  environment {
+    DEPLOY_TAG = 'no'
+  }
+
+  stages {
+    stage('Clone') {
+      steps {
+        git branch: env.BRANCH_NAME,
+          credentialsId: 'github_access_token',
+          url: 'https://github.com/leeleelee3264/musical-twitterbot-without-selenium.git'
+      }
+    }
+    stage('Build') {
+      steps {
+        echo "INFO: Build"
+      }
+    }
+    stage('Integration') {
+      steps {
+        echo "INFO: Integration"
+      }
+    }
+    stage('Test') {
+      steps {
+        echo "INFO: Test"
+      }
+    }
+    stage('Deploy') {
+      when {
+        branch 'master'
+      }
+      steps {
+        script {
+          DEPLOY_TAG = 'yes'
+        }
+        echo "INFO: Deploy: this is master only"
+      }
+    }
+  }
+
+  post {
+    success {
+      notiBuilder('Success', DEPLOY_TAG)
     }
 
-    stages {
-        stage('Clone') {
-            steps {
-                git branch: env.BRANCH_NAME,
-                credentialsId: 'github_access_token',
-                url: 'https://github.com/leeleelee3264/musical-twitterbot-without-selenium.git'
-            }
-        }
-        stage('Build') {
-            steps {
-                echo "INFO: Build"
-            }
-        }
-        stage('Integration') {
-            steps {
-                echo "INFO: Integration"
-            }
-        }
-        stage('Test') {
-            steps {
-                echo "INFO: Test"
-            }
-        }
-        stage('Deploy') {
-            when {
-                branch 'master'
-            }
-            steps {
-                script {
-                    DEPLOY_TAG = 'yes'
-                }
-                echo "INFO: Deploy: this is master only"
-            }
-        }
+    failure {
+      notiBuilder('Failed', DEPLOY_TAG)
     }
-
-    post {
-        success {
-            notiBuilder('Success', 'good', DEPLOY_TAG)
-        }
-
-        failure {
-            notiBuilder('Failed', 'danger', DEPLOY_TAG)
-        }
-    }
+  }
 }
 
-
-def notiBuilder(String status, String colorCode, String deploy) {
+def notiBuilder(String status, String deploy) {
 
   if (deploy == 'yes') {
     message = ':fire: *Deploy* result :fire:'
   } else {
     message = ':fire: *Build* result :fire:'
+  }
+
+  if (status == 'Success') {
+    url = "https://user-images.githubusercontent.com/35620531/229273778-1f7c720f-2e4b-4440-8fa0-11924b93978e.png"
+  } else {
+    url = "https://user-images.githubusercontent.com/35620531/229273784-65b4130d-f346-461d-8b81-bf900c8c4348.png"
   }
 
   def blocks = [
@@ -66,6 +102,18 @@ def notiBuilder(String status, String colorCode, String deploy) {
       "text": [
         "type": "mrkdwn",
         "text": message
+      ]
+    ],
+    [
+      "type": "section",
+      "text": [
+        "type": "mrkdwn",
+        "text": "Your Jenkins result is.... ${status}!"
+      ],
+      "accessory": [
+        "type": "image",
+        "image_url": url,
+        "alt_text": "status"
       ]
     ],
     [
@@ -109,9 +157,8 @@ def notiBuilder(String status, String colorCode, String deploy) {
     ]
   ]
 
-  slackSend (
+  slackSend(
     channel: "#my-jenkins",
-    color: "good",
     blocks: blocks
   )
 }
