@@ -71,7 +71,7 @@ def notiBuilder(String status, String deploy) {
 
   def blocks = [
     [
-      "type": "section",https://user-images.githubusercontent.com/35620531/229273778-1f7c720f-2e4b-4440-8fa0-11924b93978e.png
+      "type": "section",
       "text": [
         "type": "mrkdwn",
         "text": message
