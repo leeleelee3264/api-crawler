@@ -1,7 +1,3 @@
-def getBuildUser() {
-    return currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserId()
-}
-
 pipeline {
     agent any
     environment {
@@ -47,7 +43,6 @@ pipeline {
     post {
         always {
             script {
-                BUILD_USER = getBuildUser()
                 def commitInfo = sh(script: 'git log --pretty=format:"%h - %an: %s" -1', returnStdout: true).trim()
                 def commitUrl = sh(script: 'git log --pretty=format:"https://github.com/leeleelee3264/musical-twitterbot-without-selenium/commit/%H" -1', returnStdout: true).trim()
             }
@@ -82,7 +77,7 @@ pipeline {
                             ],
                             [
                                 "type": "mrkdwn",
-                                "text": "*Author*\n${BUILD_USER}"
+                                "text": "*Author*\n"
                             ],
                             [
                                 "type": "mrkdwn",
