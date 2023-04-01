@@ -52,7 +52,7 @@ pipeline {
 }
 
 
-def notiBuilder(String status, String color, String deploy) {
+def notiBuilder(String status, String colorCode, String deploy) {
 
   if (deploy == 'yes') {
     message = ':fire: *Deploy* result :fire:'
@@ -103,12 +103,15 @@ def notiBuilder(String status, String color, String deploy) {
           "text": "*Commit Message*\nwww"
         ]
       ]
+    ],
+    [
+      "type": "divider"
     ]
   ]
 
   slackSend (
     channel: '#my-jenkins',
-    color: ${color},
+    color: colorCode,
     blocks: blocks
   )
 }
