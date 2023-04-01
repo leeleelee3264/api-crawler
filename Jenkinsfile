@@ -1,7 +1,3 @@
-def getBuildUser() {
-    return currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserId()
-}
-
 pipeline {
     agent any
     environment {
@@ -45,11 +41,6 @@ pipeline {
     }
 
     post {
-        always {
-            script {
-                BUILD_USER = getBuildUser()
-            }
-        }
         success {
             script {
                 def blocks = [
@@ -68,7 +59,7 @@ pipeline {
                         "fields": [
                             [
                                 "type": "mrkdwn",
-                                "text": "*Status*\n${currentBuild.currentResult}"
+                                "text": "*Status*\n"
                             ],
                             [
                                 "type": "mrkdwn",
@@ -80,7 +71,7 @@ pipeline {
                             ],
                             [
                                 "type": "mrkdwn",
-                                "text": "*Author*\n${BUILD_USER}"
+                                "text": "*Author*\n"
                             ],
                             [
                                 "type": "mrkdwn",
