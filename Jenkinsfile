@@ -41,6 +41,11 @@ pipeline {
     }
 
     post {
+        always {
+            script {
+                BUILD_USER = getBuildUser()
+            }
+        }
         success {
             script {
                 def blocks = [
@@ -48,7 +53,7 @@ pipeline {
                         "type": "section",
                         "text": [
                             "type": "mrkdwn",
-                            "text": "*Build Result*"
+                            "text": "*This is CI/CD result from Jenkins*"
                         ]
                     ],
                     [
@@ -59,7 +64,7 @@ pipeline {
                         "fields": [
                             [
                                 "type": "mrkdwn",
-                                "text": "*Status*\n"
+                                "text": "*Status*\n${currentBuild.currentResult}"
                             ],
                             [
                                 "type": "mrkdwn",
@@ -71,7 +76,7 @@ pipeline {
                             ],
                             [
                                 "type": "mrkdwn",
-                                "text": "*Author*\n"
+                                "text": "*Author*\n${BUILD_USER}"
                             ],
                             [
                                 "type": "mrkdwn",
