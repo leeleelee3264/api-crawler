@@ -41,12 +41,6 @@ pipeline {
     }
 
     post {
-        always {
-            script {
-                def commitInfo = sh(script: 'git log --pretty=format:"%h - %an: %s" -1', returnStdout: true).trim()
-                def commitUrl = sh(script: 'git log --pretty=format:"https://github.com/leeleelee3264/musical-twitterbot-without-selenium/commit/%H" -1', returnStdout: true).trim()
-            }
-        }
         success {
             notiBuilder('Success', '#00FF00', DEPLOY_TAG)
         }
@@ -54,6 +48,7 @@ pipeline {
         failure {
             notiBuilder('Failed', '#FF0000', DEPLOY_TAG)
         }
+    }
 }
 
 
