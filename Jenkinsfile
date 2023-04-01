@@ -110,8 +110,8 @@ def notiBuilder(String status, String colorCode, String deploy) {
   ]
 
   slackSend (
-    channel: '#my-jenkins',
-    color: colorCode,
-    message: blocks
+    channel: "#my-jenkins",
+    color: "good",
+    blocks: blocks
   )
 }
