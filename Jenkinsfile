@@ -112,6 +112,6 @@ def notiBuilder(String status, String colorCode, String deploy) {
   slackSend (
     channel: '#my-jenkins',
     color: colorCode,
-    blocks: blocks
+    message: blocks
   )
 }
