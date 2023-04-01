@@ -71,6 +71,9 @@ def notiBuilder(String status, String deploy) {
     url = "https://user-images.githubusercontent.com/35620531/229273778-1f7c720f-2e4b-4440-8fa0-11924b93978e.png"
   }
 
+  def githubUrl = ${env.GIT_URL}
+  def urlWithoutGit = githubUrl.replaceAll(/\.git$/, '')
+
   def blocks = [
     [
       "type": "section",
@@ -119,7 +122,7 @@ def notiBuilder(String status, String deploy) {
         ],
         [
           "type": "mrkdwn",
-          "text": "*Commit*\n<${env.GIT_URL}/commit/${env.GIT_COMMIT_SHORT}|${env.GIT_COMMIT_SHORT}>"
+          "text": "*Commit*\n<${urlWithoutGit}/commit/${env.GIT_COMMIT_SHORT}|${env.GIT_COMMIT_SHORT}>"
         ],
         [
           "type": "mrkdwn",
