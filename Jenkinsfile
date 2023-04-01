@@ -48,119 +48,72 @@ pipeline {
             }
         }
         success {
-            script {
-                def blocks = [
-                    [
-                        "type": "section",
-                        "text": [
-                            "type": "mrkdwn",
-                            "text": "*This is CI/CD result from Jenkins*"
-                        ]
-                    ],
-                    [
-                        "type": "divider"
-                    ],
-                    [
-                        "type": "section",
-                        "fields": [
-                            [
-                                "type": "mrkdwn",
-                                "text": "*Status*\n${currentBuild.currentResult}"
-                            ],
-                            [
-                                "type": "mrkdwn",
-                                "text": "*Branch*\n${env.BRANCH_NAME}"
-                            ],
-                            [
-                                "type": "mrkdwn",
-                                "text": "*Output*\n<${env.BUILD_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}>"
-                            ],
-                            [
-                                "type": "mrkdwn",
-                                "text": "*Author*\n"
-                            ],
-                            [
-                                "type": "mrkdwn",
-                                "text": "*Builder Number*\n${env.BUILD_NUMBER}"
-                            ],
-                            [
-                                "type": "mrkdwn",
-                                "text": "*Commit*\n${commitUrl}"
-                            ],
-                            [
-                                "type": "mrkdwn",
-                                "text": "*Commit Message*\n${commitInfo}"
-                            ]
-                        ]
-                    ]
-                ]
-
-                if (DEPLOY_TAG == 'yes') {
-                    slackSend (
-                        channel: '#my-jenkins',
-                        color: '#00FF00',
-                        message: "SUCCESS With Deploy!!",
-                        blocks: blocks
-                    )
-                } else {
-                    slackSend (
-                        channel: '#my-jenkins',
-                        color: '#00FF00',
-                        message: "SUCCESS!!",
-                        blocks: blocks
-                    )
-                }
-            }
+            notiBuilder('Success', '#00FF00', DEPLOY_TAG)
         }
 
         failure {
-            script {
-                def blocks = [
-                    [
-                        "type": "section",
-                        "text": [
-                            "type": "mrkdwn",
-                            "text": "*Build Result*"
-                        ]
-                    ],
-                    [
-                        "type": "divider"
-                    ],
-                    [
-                        "type": "section",
-                        "fields": [
-                            [
-                                "type": "mrkdwn",
-                                "text": "*Status*\n${currentBuild.currentResult}"
-                            ],
-                            [
-                                "type": "mrkdwn",
-                                "text": "*Branch*\n${env.BRANCH_NAME}"
-                            ],
-                            [
-                                "type": "mrkdwn",
-                                "text": "*Output*\n<${env.BUILD_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}>"
-                            ],
-                            [
-                                "type": "mrkdwn",
-                                "text": "*Author*\n${BUILD_USER}"
-                            ],
-                            [
-                                "type": "mrkdwn",
-                                "text": "*Builder Number*\n${env.BUILD_NUMBER}"
-                            ],
-                            [
-                                "type": "mrkdwn",
-                                "text": "*Commit*\n<htts://github.com|frewr32>"
-                            ],
-                            [
-                                "type": "mrkdwn",
-                                "text": "*Commit Message*\nThis is commit message. long long long long long long"
-                            ]
-                        ]
-                    ]
-                    ]
-                }
-            }
+            notiBuilder('Failed', '#FF0000', DEPLOY_TAG)
         }
+}
+
+
+def notiBuilder(String status, String color, String deploy) {
+
+  if (deploy == 'yes') {
+    message = '*Deploy* result'
+  } else {
+    message = '*Build* result'
+  }
+
+  def blocks = [
+    [
+      "type": "section",
+      "text": [
+        "type": "mrkdwn",
+        "text": message
+      ]
+    ],
+    [
+      "type": "divider"
+    ],
+    [
+      "type": "section",
+      "fields": [
+        [
+          "type": "mrkdwn",
+          "text": "*Status*\nstatus"
+        ],
+        [
+          "type": "mrkdwn",
+          "text": "*Branch*\n${env.BRANCH_NAME}"
+        ],
+        [
+          "type": "mrkdwn",
+          "text": "*Output*\n<${env.BUILD_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}>"
+        ],
+        [
+          "type": "mrkdwn",
+          "text": "*Author*\n"
+        ],
+        [
+          "type": "mrkdwn",
+          "text": "*Builder Number*\n${env.BUILD_NUMBER}"
+        ],
+        [
+          "type": "mrkdwn",
+          "text": "*Commit*\nwww"
+        ],
+        [
+          "type": "mrkdwn",
+          "text": "*Commit Message*\nwww"
+        ]
+      ]
+    ]
+  ]
+
+  slackSend (
+    channel: '#my-jenkins',
+    color: color,
+    blocks: blocks
+  )
 }
