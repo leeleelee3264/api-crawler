@@ -10,6 +10,10 @@ pipeline {
         git branch: env.BRANCH_NAME,
           credentialsId: 'github_access_token',
           url: 'https://github.com/leeleelee3264/musical-twitterbot-without-selenium.git'
+
+        script {
+            env.GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
+        }
       }
     }
     stage('Build') {
@@ -60,14 +64,14 @@ def notiBuilder(String status, String deploy) {
   }
 
   if (status == 'Success') {
-    url = "https://user-images.githubusercontent.com/35620531/229273778-1f7c720f-2e4b-4440-8fa0-11924b93978e.png"
-  } else {
     url = "https://user-images.githubusercontent.com/35620531/229273784-65b4130d-f346-461d-8b81-bf900c8c4348.png"
+  } else {
+    url = "https://user-images.githubusercontent.com/35620531/229273778-1f7c720f-2e4b-4440-8fa0-11924b93978e.png"
   }
 
   def blocks = [
     [
-      "type": "section",
+      "type": "section",https://user-images.githubusercontent.com/35620531/229273778-1f7c720f-2e4b-4440-8fa0-11924b93978e.png
       "text": [
         "type": "mrkdwn",
         "text": message
@@ -117,7 +121,7 @@ def notiBuilder(String status, String deploy) {
         ],
         [
           "type": "mrkdwn",
-          "text": "*Commit Message*\nwww"
+          "text": "*Commit Message*\${env.GIT_COMMIT_MSG}"
         ]
       ]
     ],
