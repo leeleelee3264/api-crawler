@@ -55,10 +55,10 @@ pipeline {
                 def blocks = [
                     {
                         "type": "section",
-                        "text": {
+                        "text": [
                             "type": "mrkdwn",
                             "text": "*Build Result*"
-                        }
+                        ]
                     },
                     {
                         "type": "divider"
