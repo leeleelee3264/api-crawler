@@ -137,6 +137,7 @@ def notiBuilder(String status, String deploy) {
 
   slackSend(
     channel: "#my-jenkins",
-    blocks: blocks
+    blocks: blocks,
+    unfurl_links: false
   )
 }
