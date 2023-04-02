@@ -89,7 +89,7 @@ def notiBuilder(String status, String deploy) {
 					"emoji": true
 				],
 				"value": "click_me_123",
-				"url": ${urlWithoutGit}/commit/${env.GIT_COMMIT_SHORT},
+				"url": urlWithoutGit/commit/env.GIT_COMMIT_SHORT,
 				"action_id": "button-action"
 			]
     ],
