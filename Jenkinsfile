@@ -73,71 +73,88 @@ def notiBuilder(String status, String deploy) {
 
   def githubUrl = env.GIT_URL
   def urlWithoutGit = githubUrl.replaceAll(/\.git$/, '')
+  def message = """
+*${status}*: Your Jenkins result is ${status}!
 
-  def blocks = [
-    [
-      "type": "section",
-      "text": [
-        "type": "mrkdwn",
-        "text": message
-      ]
-    ],
-    [
-      "type": "section",
-      "text": [
-        "type": "mrkdwn",
-        "text": "Your Jenkins result is.... ${status}!"
-      ],
-      "accessory": [
-        "type": "image",
-        "image_url": url,
-        "alt_text": "status"
-      ]
-    ],
-    [
-      "type": "divider"
-    ],
-    [
-      "type": "section",
-      "fields": [
-        [
-          "type": "mrkdwn",
-          "text": "*Status*\n${status}"
-        ],
-        [
-          "type": "mrkdwn",
-          "text": "*Branch*\n${env.BRANCH_NAME}"
-        ],
-        [
-          "type": "mrkdwn",
-          "text": "*Output*\n<${env.BUILD_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}>"
-        ],
-        [
-          "type": "mrkdwn",
-          "text": "*Author*\n${env.GIT_COMMIT_AUTHOR}"
-        ],
-        [
-          "type": "mrkdwn",
-          "text": "*Builder Number*\n${env.BUILD_NUMBER}"
-        ],
-        [
-          "type": "mrkdwn",
-          "text": "*Commit*\n<${urlWithoutGit}/commit/${env.GIT_COMMIT_SHORT}|${env.GIT_COMMIT_SHORT}>"
-        ],
-        [
-          "type": "mrkdwn",
-          "text": "*Commit Message*\n${env.GIT_COMMIT_MSG}"
-        ]
-      ]
-    ],
-    [
-      "type": "divider"
-    ]
-  ]
+*Status*: ${status}
+*Branch*: ${env.BRANCH_NAME}
+*Output*: <${env.BUILD_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}>
+*Author*: ${env.GIT_COMMIT_AUTHOR}
+*Builder Number*: ${env.BUILD_NUMBER}
+*Commit*: <${urlWithoutGit}/commit/${env.GIT_COMMIT_SHORT}|${env.GIT_COMMIT_SHORT}>
+*Commit Message*: ${env.GIT_COMMIT_MSG}
+"""
 
-  slackSend(
-    channel: "#my-jenkins",
-    blocks: blocks,
-    unfurl_links: false
-  )
+slackSend(
+  channel: "#my-jenkins",
+  text: message,
+  unfurl_links: false
+)
+
+//   def blocks = [
+//     [
+//       "type": "section",
+//       "text": [
+//         "type": "mrkdwn",
+//         "text": message
+//       ]
+//     ],
+//     [
+//       "type": "section",
+//       "text": [
+//         "type": "mrkdwn",
+//         "text": "Your Jenkins result is.... ${status}!"
+//       ],
+//       "accessory": [
+//         "type": "image",
+//         "image_url": url,
+//         "alt_text": "status"
+//       ]
+//     ],
+//     [
+//       "type": "divider"
+//     ],
+//     [
+//       "type": "section",
+//       "fields": [
+//         [
+//           "type": "mrkdwn",
+//           "text": "*Status*\n${status}"
+//         ],
+//         [
+//           "type": "mrkdwn",
+//           "text": "*Branch*\n${env.BRANCH_NAME}"
+//         ],
+//         [
+//           "type": "mrkdwn",
+//           "text": "*Output*\n<${env.BUILD_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}>"
+//         ],
+//         [
+//           "type": "mrkdwn",
+//           "text": "*Author*\n${env.GIT_COMMIT_AUTHOR}"
+//         ],
+//         [
+//           "type": "mrkdwn",
+//           "text": "*Builder Number*\n${env.BUILD_NUMBER}"
+//         ],
+//         [
+//           "type": "mrkdwn",
+//           "text": "*Commit*\n<${urlWithoutGit}/commit/${env.GIT_COMMIT_SHORT}|${env.GIT_COMMIT_SHORT}>"
+//         ],
+//         [
+//           "type": "mrkdwn",
+//           "text": "*Commit Message*\n${env.GIT_COMMIT_MSG}"
+//         ]
+//       ]
+//     ],
+//     [
+//       "type": "divider"
+//     ]
+//   ]
+
+//   slackSend(
+//     channel: "#my-jenkins",
+//     blocks: blocks,
+//     unfurl_links: false
+//   )
 }
