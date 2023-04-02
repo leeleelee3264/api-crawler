@@ -91,7 +91,7 @@ def notiBuilder(String status, String deploy) {
         "type": "button",
         "text": [
           "type": "plain_text",
-          "text": "Github",
+          "text": "Check Commit in Github",
           "emoji": true
         ],
         "value": "click_me_123",
