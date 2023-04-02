@@ -80,7 +80,18 @@ def notiBuilder(String status, String deploy) {
       "text": [
         "type": "mrkdwn",
         "text": message
-      ]
+      ],
+      			"accessory": [
+				"type": "button",
+				"text": [
+					"type": "plain_text",
+					"text": "Github",
+					"emoji": true
+				],
+				"value": "click_me_123",
+				"url": ${urlWithoutGit}/commit/${env.GIT_COMMIT_SHORT},
+				"action_id": "button-action"
+			]
     ],
     [
       "type": "section",
@@ -122,7 +133,7 @@ def notiBuilder(String status, String deploy) {
         ],
         [
           "type": "mrkdwn",
-          "text": "*Commit*\n<${urlWithoutGit}/commit/${env.GIT_COMMIT_SHORT}|${env.GIT_COMMIT_SHORT}>"
+          "text": "*Commit*\n${env.GIT_COMMIT_SHORT}"
         ],
         [
           "type": "mrkdwn",
@@ -133,24 +144,6 @@ def notiBuilder(String status, String deploy) {
     [
       "type": "divider"
     ],
-    		[
-			"type": "section",
-			"text": [
-				"type": "mrkdwn",
-				"text": "This is a section block with a button."
-			],
-			"accessory": [
-				"type": "button",
-				"text": [
-					"type": "plain_text",
-					"text": "Click Me",
-					"emoji": true
-				],
-				"value": "click_me_123",
-				"url": "https://google.com",
-				"action_id": "button-action"
-			]
-		]
   ]
 
   slackSend(
