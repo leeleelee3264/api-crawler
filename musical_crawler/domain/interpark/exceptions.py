@@ -1,0 +1,2 @@
+class CastingInfoNotFoundError(Exception):
+    pass
