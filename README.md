@@ -1,4 +1,4 @@
-# musical-twitterbot-without-selenium
+# api-crawler
 
 <br>
 
@@ -23,10 +23,3 @@
 여러 deepth의 페이지들을 왔다 갔다 동적으로 크롤링을 해야 해서 리소스가 뜨는 대기시간을 위해 곳곳에 Sleep을 걸어두는 둥 코드 자체에 불안정한 부분이 더러 있었다. 하지만 알고보니 웹크롤링 말고도 API를 이용해서 정보를 얻어올 수 있어, Selenium 없는 프로젝트를 시작하게 되었다.
 
 <br>
-
-## Project TODO List 
-- [ ] Jenkinsf로 CI/CD 구성
-- [ ] 1st Implement
-- [ ] 2nd Refactoring  
-- [ ] Jenkins 설정 문서화
-- [ ] 프로젝트 진행, 결과 문서화
