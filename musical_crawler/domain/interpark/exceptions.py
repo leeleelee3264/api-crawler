@@ -1,2 +1,0 @@
-class CastingInfoNotFoundError(Exception):
-    pass
